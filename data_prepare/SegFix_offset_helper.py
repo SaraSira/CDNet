@@ -105,7 +105,7 @@ class Sobel:
         shape must be odd: eg. (5,5)
         axis is the direction, with 0 to positive x and 1 to positive y
         """
-        k = np.zeros(shape, dtype=np.float32)
+        k = np.zeros(shape, dtype=float)
         p = [
             (j, i)
             for j in range(shape[0])
@@ -141,9 +141,9 @@ class DTOffsetHelper:
         """
         assert isinstance(dir_labels, np.ndarray)
 
-        output = np.zeros((*dir_labels.shape, 8), dtype=np.int)
+        output = np.zeros((*dir_labels.shape, 8), dtype=int)
         for i in range(8):
-            output[..., i] = (dir_labels & (1 << i) != 0).astype(np.int)
+            output[..., i] = (dir_labels & (1 << i) != 0).astype(int)
 
         return output
 
@@ -202,7 +202,7 @@ class DTOffsetHelper:
         if return_tensor:
             energy_label_map = torch.zeros_like(seg_label_map).long().to(distance_map.device)
         else:
-            energy_label_map = np.zeros(seg_label_map.shape, dtype=np.int)
+            energy_label_map = np.zeros(seg_label_map.shape, dtype=int)
 
         keep_mask = seg_label_map != -1
         energy_level_step = DTOffsetConfig.energy_level_step
@@ -275,7 +275,7 @@ class DTOffsetHelper:
         if return_tensor:
             mask_label_map = torch.zeros_like(seg_label_map).long().to(distance_map.device)
         else:
-            mask_label_map = np.zeros(seg_label_map.shape, dtype=np.int)
+            mask_label_map = np.zeros(seg_label_map.shape, dtype=int)
 
         keep_mask = (distance_map <= DTOffsetConfig.max_distance) & (distance_map >= DTOffsetConfig.min_distance)
         mask_label_map[keep_mask] = 1
@@ -326,8 +326,8 @@ class DTOffsetHelper:
             new_angle_map = torch.zeros(angle_map.shape).float().to(angle_map.device)
             angle_index_map = torch.zeros(angle_map.shape).long().to(angle_map.device)
         else:
-            new_angle_map = np.zeros(angle_map.shape, dtype=np.float)
-            angle_index_map = np.zeros(angle_map.shape, dtype=np.int)
+            new_angle_map = np.zeros(angle_map.shape, dtype=float)
+            angle_index_map = np.zeros(angle_map.shape, dtype=int)
         mask = (angle_map <= (-180 + step/2)) | (angle_map > (180 - step/2))
         new_angle_map[mask] = -180
         angle_index_map[mask] = 0
@@ -376,8 +376,8 @@ class DTOffsetHelper:
             offset_h = torch.zeros(angle_map.shape).long().to(angle_map.device)
             offset_w = torch.zeros(angle_map.shape).long().to(angle_map.device)
         else:
-            offset_h = np.zeros(angle_map.shape, dtype=np.int)
-            offset_w = np.zeros(angle_map.shape, dtype=np.int)
+            offset_h = np.zeros(angle_map.shape, dtype=int)
+            offset_w = np.zeros(angle_map.shape, dtype=int)
 
         for i in range(num_classes):
             mask = (angle_index_map == i) & ~no_offset_mask
@@ -408,8 +408,8 @@ class DTOffsetHelper:
         else:
             step = 6
             coord_map = torch.stack(torch.meshgrid([torch.arange(
-                length) for length in _offset.shape[:-1]]), dim=-1).numpy().astype(np.int)
-            offset = (_offset * 10 + coord_map).astype(np.int)
+                length) for length in _offset.shape[:-1]]), dim=-1).numpy().astype(int)
+            offset = (_offset * 10 + coord_map).astype(int)
             for i in range(step//2, offset.shape[0], step):
                 for j in range(step//2, offset.shape[1], step):
                     if (_offset[i, j] == 0).all():
@@ -436,7 +436,7 @@ class DTOffsetHelper:
             deg2rad = lambda x: np.pi / 180.0 * x
         else:
             lib = np
-            vector_map = np.zeros((*angle_map.shape, 2), dtype=np.float)
+            vector_map = np.zeros((*angle_map.shape, 2), dtype=float)
             deg2rad = np.deg2rad
 
         if num_classes is not None:
@@ -473,7 +473,7 @@ class DTOffsetHelper:
             if return_tensor:
                 ignore_mask = torch.zeros(angle_map.shape, dtype=torch.uint8).to(angle_map.device)
             else:
-                ignore_mask = np.zeros(angle_map.shape, dtype=np.bool)
+                ignore_mask = np.zeros(angle_map.shape, dtype=bool)
         else:
             ignore_mask = seg_label_map == -1
             
