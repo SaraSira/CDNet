@@ -26,7 +26,7 @@ import time
 import os
 
 
-path = r'D:\EditSoftware\DemoTest\PHDPaperDemo\CDNet'
+path = '/content/CDNet'    # MODIFICATO: r'D:\EditSoftware\DemoTest\PHDPaperDemo\CDNet'
 os.chdir(path)
 
 
