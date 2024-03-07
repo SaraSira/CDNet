@@ -699,7 +699,7 @@ class LabelEncoding(object):
         time_str = str(start_time)[-5:]
 
         out_imgs = list(imgs)
-        label = imgs[2]  # imgs[-1]
+        label = imgs[2]  # imgs[2]    
 
 
         if not isinstance(label, np.ndarray):
@@ -779,26 +779,25 @@ class LabelEncoding(object):
                     label_instance = morphology.dilation(label_instance, selem=morphology.selem.disk(self.radius))
 
         label1 = Image.fromarray((new_label / 2 * 255).astype(np.uint8))
-        out_imgs[2] = label1
-
+        out_imgs[2] = label1   
 
         do_direction = self.do_direction
         if (do_direction == 1):
             height, width = label.shape[0], label.shape[1]
-            distance_map = np.zeros((height, width), dtype=np.float)
-            distance_center_map = np.zeros((height, width), dtype=np.float)
+            distance_map = np.zeros((height, width), dtype=float)
+            distance_center_map = np.zeros((height, width), dtype=float)
 
-            dir_map = np.zeros((height, width, 2), dtype=np.float32)
+            dir_map = np.zeros((height, width, 2), dtype=float)
             ksize = 11
             point_number = 0
-            label_point = np.zeros((height, width), dtype=np.float)
+            label_point = np.zeros((height, width), dtype=float)
 
             mask = label_instance
             markers_unique = np.unique(label_instance)
             markers_len = len(np.unique(label_instance)) - 1
 
             for k in markers_unique[1:]:
-                nucleus = (mask == k).astype(np.int)
+                nucleus = (mask == k).astype(int)
                 distance_i = distance_transform_edt(nucleus)
                 distance_i_normal = distance_i / distance_i.max()
                 distance_map = distance_map + distance_i_normal
@@ -817,7 +816,7 @@ class LabelEncoding(object):
                 
                 #if (do_direction == 1):
                 nucleus = morphology.dilation(nucleus, morphology.disk(self.radius))
-                point_map_k = np.zeros((height, width), dtype=np.int)
+                point_map_k = np.zeros((height, width), dtype=int)
                 point_map_k[local_maxi[0][0], local_maxi[0][1]] = 1
                 int_pos = distance_transform_edt(1 - point_map_k)
                 int_pos = int_pos * nucleus
@@ -825,7 +824,9 @@ class LabelEncoding(object):
                 distance_center_map = distance_center_map + distance_center_i
 
                 dir_i = np.zeros_like(dir_map)
-                sobel_kernel = Sobel.kernel(ksize=ksize)
+                # sobel_kernel = Sobel.kernel(ksize=ksize)
+                sobel_kernel = torch.from_numpy(Sobel.kernel(ksize=ksize).numpy()).float()
+
                 dir_i = torch.nn.functional.conv2d(
                     torch.from_numpy(distance_center_i).float().view(1, 1, height, width),
                     sobel_kernel, padding=ksize // 2).squeeze().permute(1, 2, 0).numpy()
@@ -839,7 +840,7 @@ class LabelEncoding(object):
             
             distance_map = distance_center_map
 
-            label_point_gaussian = ndimage.gaussian_filter(label_point, sigma=2, order=0).astype(np.float16)
+            label_point_gaussian = ndimage.gaussian_filter(label_point, sigma=2, order=0).astype(float)
             out_imgs.append(label_point_gaussian)
             
 
@@ -875,8 +876,8 @@ class LabelEncoding(object):
 
         else:
             min_value = 190
-            # label_point_gaussian = np.zeros((height, width), dtype=np.float)
-            # label_direction_new = np.zeros((height, width), dtype=np.float)
+            # label_point_gaussian = np.zeros((height, width), dtype=float)
+            # label_direction_new = np.zeros((height, width), dtype=float)
             # out_imgs.append(label_point_gaussian)
             # out_imgs.append(label_direction_new)
 
@@ -924,9 +925,9 @@ class ToTensor(object):
 
             # handle PIL Image
             if img.mode == 'I':
-                pic = torch.from_numpy(np.array(img, np.int32, copy=False))
+                pic = torch.from_numpy(np.array(img, int, copy=False))
             elif img.mode == 'I;16':
-                pic = torch.from_numpy(np.array(img, np.int16, copy=False))
+                pic = torch.from_numpy(np.array(img, int, copy=False))
             else:
                 pic = torch.ByteTensor(torch.ByteStorage.from_buffer(img.tobytes()))
             # PIL image mode: 1, L, P, I, F, RGB, YCbCr, RGBA, CMYK
@@ -961,9 +962,9 @@ class ToTensor(object):
 
             # handle PIL Image
             if label.mode == 'I':
-                label_tensor = torch.from_numpy(np.array(label, np.int32, copy=False))
+                label_tensor = torch.from_numpy(np.array(label, int, copy=False))
             elif label.mode == 'I;16':
-                label_tensor = torch.from_numpy(np.array(label, np.int16, copy=False))
+                label_tensor = torch.from_numpy(np.array(label, int, copy=False))
             else:
                 label_tensor = torch.ByteTensor(torch.ByteStorage.from_buffer(label.tobytes()))
             # PIL image mode: 1, L, P, I, F, RGB, YCbCr, RGBA, CMYK
