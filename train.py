@@ -272,12 +272,12 @@ def main():
 
         #if opt.dataset != 'GlaS':
         if opt.dataset == 'CPM2017' or opt.dataset == 'MultiOrgan':
-            post_fix = ['weight.png', 'label.png']  # mask  label.png seg_colored.png
-            #post_fix = ['weight.png', 'label.mat'] # [ CPM2017 label.mat],   others: label.npy
+            #post_fix = ['weight.png', 'label.png']  # mask  label.png seg_colored.png
+            post_fix = ['weight.png', 'label.mat'] # [ CPM2017 label.mat],   others: label.npy
         
         else:
-            post_fix = ['weight.png', 'label.png']  # mask  label.png seg_colored.png
-            #post_fix = ['weight.png', 'label.npy']
+            #post_fix = ['weight.png', 'label.png']  # mask  label.png seg_colored.png
+            post_fix = ['weight.png', 'label.npy']
         if opt.dataset == 'BBBC039V1':
             num_channels = [1, 1, 3] #[3, 1, 1] #
         else:
