@@ -49,7 +49,7 @@ def generate_dd_map(label_direction, direction_classes):
 
     height, weight = direction_os.shape[0], direction_os.shape[1]
 
-    cos_sim_map = np.zeros((height, weight), dtype=np.float)
+    cos_sim_map = np.zeros((height, weight), dtype=float)
 
     feature_list = []
     feature5 = direction_os  # .transpose(1, 2, 0)
@@ -87,7 +87,7 @@ def generate_dd_map(label_direction, direction_classes):
         feature_list.append(feature8)
         feature_list.append(feature9)
 
-    cos_value = np.zeros((height, weight, direction_classes - 1), dtype=np.float32)
+    cos_value = np.zeros((height, weight, direction_classes - 1), dtype=float)
     # print('cos_value.shape = {}'.format(cos_value.shape))
     for k, feature_item in enumerate(feature_list):
         fenzi = (feature5[:, :, 0] * feature_item[:, :, 0] + feature5[:, :, 1] * feature_item[:, :, 1])
