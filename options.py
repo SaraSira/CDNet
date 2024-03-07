@@ -30,7 +30,7 @@ def get_transformString(trans_train):
 
 class Options:
     def __init__(self, isTrain):
-        self.dataset = 'MoNuSeg_oridata'
+        self.dataset = 'CPM2017'  # MODIFICATO: 'MoNuSeg_oridata'
         self.isTrain = isTrain
         self.all_img_test = 1
         self.momentum = 0.95
@@ -70,7 +70,7 @@ class Options:
         self.train = dict()
         self.train['branch'] = 5  # branch
         
-        self.train['num_epochs'] = 300  # number of training epochs
+        self.train['num_epochs'] = 5   # number of training epochs             # MODIFICATO: 300  
         self.train['input_size'] = 256  # input size of the image
         self.train['batch_size'] = 8  # batch size
         self.train['val_overlap'] = 40  # overlap size of patches for validation
@@ -92,7 +92,7 @@ class Options:
         self.train['optimizer'] = 'adam'  # define optimizer
         self.train['validation'] = 0  # doing validation
 
-        self.train['checkpoint_freq'] = 100  # epoch to save checkpoints
+        self.train['checkpoint_freq'] = 1  # epoch to save checkpoints  # MODIFICATO: 100
         # --- resume training --- #
         self.train['start_epoch'] = 0  # start epoch
         self.train['checkpoint'] = ''  # checkpoint to resume training or evaluation
@@ -135,7 +135,7 @@ class Options:
 
         self.model['exp_filename'] = stringFirst + inputInfo# + stringLast #'exp_filename'
 
-        self.train['data_dir'] = './data/{:s}'.format(self.dataset)  # path to data
+        self.train['data_dir'] =  '/content/drive/MyDrive/data /{:s}'.format(self.dataset)  # MODIFICATO: './data/{:s}'.format(self.dataset)  # path to data
         self.train['save_dir'] = './experiments/{:s}/{:s}'.format(self.dataset, self.model['exp_filename'])
         self.train['weight_map_dir'] = '{:s}/weight_maps'.format(self.train['data_dir'])
         #self.train['labels_WM_dir'] = '{:s}/labels_WM'.format(self.train['data_dir'])
