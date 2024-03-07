@@ -135,7 +135,7 @@ class Options:
 
         self.model['exp_filename'] = stringFirst + inputInfo# + stringLast #'exp_filename'
 
-        self.train['data_dir'] =  '/content/drive/MyDrive/data /{:s}'.format(self.dataset)  # MODIFICATO: './data/{:s}'.format(self.dataset)  # path to data
+        self.train['data_dir'] =  '/content/drive/MyDrive/data/{:s}'.format(self.dataset)  # MODIFICATO: './data/{:s}'.format(self.dataset)  # path to data
         self.train['save_dir'] = './experiments/{:s}/{:s}'.format(self.dataset, self.model['exp_filename'])
         self.train['weight_map_dir'] = '{:s}/weight_maps'.format(self.train['data_dir'])
         #self.train['labels_WM_dir'] = '{:s}/labels_WM'.format(self.train['data_dir'])
@@ -160,12 +160,12 @@ class Options:
         self.test['branch'] = 5
 
         self.test['groundtruth'] = 0
-        self.test['img_dir'] = './data/{:s}/images/{:s}'.format(self.dataset,
+        self.test['img_dir'] = '/content/drive/MyDrive/data/{:s}/images/{:s}'.format(self.dataset,
                                                                 self.test['filename'])
-        self.test['label_dir'] = './data/{:s}/labels/{:s}'.format(self.dataset, self.test[
+        self.test['label_dir'] = '/content/drive/MyDrive/data/{:s}/labels/{:s}'.format(self.dataset, self.test[
             'filename'])  # labels_instance
         self.test['annotation_dir'] = './data/{:s}/Annotations'.format(self.dataset)
-        self.test['weight_map_dir'] = './data/{:s}/weight_maps'.format(self.dataset)
+        self.test['weight_map_dir'] = '/content/drive/MyDrive/data/{:s}/weight_maps'.format(self.dataset)
 
         self.test['tta'] = True  # True #False
         self.test['save_flag'] = True  # True #False
@@ -292,7 +292,7 @@ class Options:
             self.train['gpu'] = list(args.gpu)
             self.train['branch'] = args.branch
             self.train['checkpoint'] = args.checkpoint_path
-            self.train['data_dir'] = './data/{:s}'.format(self.dataset)  # args.data_dir
+            self.train['data_dir'] = '/content/drive/MyDrive/data/{:s}'.format(self.dataset)  # args.data_dir
             self.train['img_dir'] = '{:s}/images'.format(self.train['data_dir'])
             self.train['label_dir'] = '{:s}/labels'.format(self.train['data_dir'])
             self.train['weight_map_dir'] = '{:s}/weight_maps'.format(self.train['data_dir'])
